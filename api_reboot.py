@@ -16,10 +16,12 @@ class Reboot(Resource):
 		server = request.form['server']
 		user = request.form['user']
 		passwd = request.form['passwd']
-		command = request.form['command']
+		command = 'fdisk -l'
+		
+		sudo_command = "sudo -S %s" % command
 
-		out = conn.connect_ssh(server, user, passwd, command)
-
+		out = conn.connect_ssh(server, user, passwd, sudo_command)
+		
 		return {'output' : out}
 
 
