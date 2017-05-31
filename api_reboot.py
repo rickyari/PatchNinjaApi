@@ -1,21 +1,41 @@
 #!/usr/bin/env python
 
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 from common import connect_ssh as conn
 
 app = Flask(__name__)
 api = Api(app)
 
+# add arguments 
+
+options = reqparse.RequestParser()
+options.add_argument(
+    'user', dest='user',
+    location='form', required=True,
+    help='The username is required',
+)
+options.add_argument(
+	'server', dest='server',
+	location='form', required=True,
+	help='The server name is required',
+)
+options.add_argument(
+	'passwd', dest='passwd',
+	location='form', required=True,
+	help='The user password is required',
+)
 
 class Reboot(Resource):
 
 
 	def post(self):
 
-		server = request.form['server']
-		user = request.form['user']
-		passwd = request.form['passwd']
+		args = options.parse_args()
+
+		server = args.server
+		user = args.user
+		passwd = args.passwd
 		command = 'fdisk -l'
 		
 		sudo_command = "sudo -S %s" % command
