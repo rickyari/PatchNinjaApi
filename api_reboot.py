@@ -3,6 +3,8 @@
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from common import connect_ssh as conn
+import paramiko
+from socket import error, gaierror
 
 app = Flask(__name__)
 api = Api(app)
@@ -40,8 +42,15 @@ class Reboot(Resource):
 		
 		sudo_command = "sudo -S %s" % command
 
-		out = conn.connect_ssh(server, user, passwd, sudo_command)
-		
+		try:
+			out = conn.connect_ssh(server, user, passwd, sudo_command)
+		except paramiko.ssh_exception.AuthenticationException as e:
+			out = str(e)
+		except gaierror as e:
+			out = str(e)
+		except error as e:
+			out = str(e)
+
 		return {'response' : out}
 
 
