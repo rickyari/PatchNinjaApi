@@ -22,7 +22,7 @@ class Reboot(Resource):
 
 		out = conn.connect_ssh(server, user, passwd, sudo_command)
 		
-		return {'output' : out}
+		return {'response' : out}
 
 
 

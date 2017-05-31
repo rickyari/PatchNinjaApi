@@ -13,7 +13,9 @@ def connect_ssh(server, user, passwd, command):
 	stdin.flush()
 
 	output = stdout.readlines()
-
+        err = stderr.readlines()
+        
+        response = {'output': output, 'err': err}
 	ssh.close()
 
-	return output
+	return response
