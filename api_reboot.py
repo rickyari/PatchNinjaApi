@@ -42,15 +42,8 @@ class Reboot(Resource):
 		
 		sudo_command = "sudo -S %s" % command
 
-		try:
-			out = conn.connect_ssh(server, user, passwd, sudo_command)
-		except paramiko.ssh_exception.AuthenticationException as e:
-			out = str(e)
-		except gaierror as e:
-			out = str(e)
-		except error as e:
-			out = str(e)
-
+		out = conn.connect_ssh(server, user, passwd, sudo_command)
+		
 		return {'response' : out}
 
 
